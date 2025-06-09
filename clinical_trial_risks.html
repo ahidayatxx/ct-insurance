@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Trial Risks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: gradientShift 10s ease-in-out infinite alternate;
+        }
+        
+        @keyframes gradientShift {
+            0% { background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%); }
+            100% { background: linear-gradient(135deg, #9b59b6 0%, #3498db 50%, #2c3e50 100%); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #9b59b6, #3498db, #1abc9c, #34495e);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .title {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+        
+        .author-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .author-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .author-title {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .intro-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            text-align: center;
+        }
+        
+        .intro-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        
+        .intro-card::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #e74c3c, #f39c12, #9b59b6, #3498db);
+            z-index: -1;
+            border-radius: 20px;
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        .intro-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .intro-text {
+            font-size: 16px;
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12);
+            border-radius: 2px;
+        }
+        
+        .risks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .risk-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .risk-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .risk-header {
+            padding: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .risk-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -50px;
+            width: 100px;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: skewX(-20deg);
+            transition: all 0.3s ease;
+        }
+        
+        .risk-card:hover .risk-header::after {
+            right: 100%;
+        }
+        
+        .safety-risk .risk-header { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .operational-risk .risk-header { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .regulatory-risk .risk-header { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .financial-risk .risk-header { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .data-risk .risk-header { background: linear-gradient(135deg, #1abc9c, #16a085); }
+        .ethical-risk .risk-header { background: linear-gradient(135deg, #34495e, #2c3e50); }
+        
+        .risk-icon {
+            font-size: 28px;
+            margin-right: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .risk-content {
+            padding: 25px;
+        }
+        
+        .risk-item {
+            background: #f8f9fa;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .risk-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(0,0,0,0.05);
+            transition: width 0.3s ease;
+        }
+        
+        .risk-item:hover::before {
+            width: 100%;
+        }
+        
+        .risk-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .safety-risk .risk-item { border-left-color: #e74c3c; }
+        .operational-risk .risk-item { border-left-color: #f39c12; }
+        .regulatory-risk .risk-item { border-left-color: #9b59b6; }
+        .financial-risk .risk-item { border-left-color: #3498db; }
+        .data-risk .risk-item { border-left-color: #1abc9c; }
+        .ethical-risk .risk-item { border-left-color: #34495e; }
+        
+        .risk-item-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .risk-item-desc {
+            color: #495057;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .severity-section {
+            margin: 50px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+        }
+        
+        .severity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .severity-card {
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .severity-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            transition: all 0.3s ease;
+            transform: scale(0);
+        }
+        
+        .severity-card:hover::before {
+            transform: scale(1);
+        }
+        
+        .severity-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .low { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .moderate { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .high { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .critical { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        
+        .severity-level {
+            font-size: 18px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .severity-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .mitigation-section {
+            margin-top: 50px;
+        }
+        
+        .mitigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .mitigation-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .mitigation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #9b59b6, #3498db);
+        }
+        
+        .mitigation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .mitigation-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        .mitigation-content {
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .stats-banner {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            margin: 50px 0;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .risks-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Clinical Trial Risks</h1>
+            <p class="subtitle">Comprehensive Risk Assessment & Management</p>
+            <div class="author-card">
+                <div class="author-name">dr. Ahmad Hidayat, MSc, MBA</div>
+                <div class="author-title">Konsultan Manajemen Kesehatan</div>
+                <div class="author-title">Praktisi Uji Klinik</div>
+            </div>
+        </div>
+        
+        <div class="intro-section">
+            <div class="intro-card">
+                <div class="intro-title">Risk Management Framework</div>
+                <div class="intro-text">
+                    Systematic identification, assessment, and mitigation of potential risks throughout the clinical trial lifecycle to ensure participant safety, data integrity, and regulatory compliance while maintaining study objectives.
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="section-header">
+                <h2 class="section-title">Risk Categories</h2>
+            </div>
+            
+            <div class="risks-grid">
+                <div class="risk-card safety-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">🚨</span>
+                        Safety & Medical Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">Adverse Events (AE)</div>
+                            <div class="risk-item-desc">Unexpected reactions, side effects, and complications from investigational products that may range from mild to severe</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Serious Adverse Events (SAE)</div>
+                            <div class="risk-item-desc">Life-threatening events requiring immediate medical intervention, hospitalization, or resulting in disability</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Drug Interactions</div>
+                            <div class="risk-item-desc">Unexpected interactions with concomitant medications affecting efficacy or safety profiles</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Long-term Effects</div>
+                            <div class="risk-item-desc">Unknown long-term consequences of experimental treatments that may manifest after trial completion</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-card operational-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">⚙️</span>
+                        Operational Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">Protocol Deviations</div>
+                            <div class="risk-item-desc">Unintentional departures from approved study procedures that could compromise data integrity</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Site Management Issues</div>
+                            <div class="risk-item-desc">Inadequate site preparation, insufficient training, or poor resource allocation affecting study quality</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Supply Chain Disruptions</div>
+                            <div class="risk-item-desc">Drug supply shortages, storage failures, and distribution issues impacting study continuity</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Staff Turnover</div>
+                            <div class="risk-item-desc">Loss of trained personnel and institutional knowledge affecting study consistency</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-card regulatory-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">📋</span>
+                        Regulatory & Compliance Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">GCP Non-compliance</div>
+                            <div class="risk-item-desc">Failure to adhere to Good Clinical Practice standards and international regulatory requirements</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Regulatory Changes</div>
+                            <div class="risk-item-desc">Mid-trial changes in regulations requiring protocol amendments and additional compliance measures</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Inspection Findings</div>
+                            <div class="risk-item-desc">Regulatory inspection findings requiring corrective actions and potential study delays</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Documentation Deficiencies</div>
+                            <div class="risk-item-desc">Inadequate or missing essential documentation compromising regulatory submissions</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-card data-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">💾</span>
+                        Data & Technology Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">Data Integrity Compromise</div>
+                            <div class="risk-item-desc">Compromised data quality, accuracy, completeness, or ALCOA+ principles violations</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">System Failures</div>
+                            <div class="risk-item-desc">EDC system downtime, technical malfunctions, or software compatibility issues</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Cybersecurity Threats</div>
+                            <div class="risk-item-desc">Data breaches, unauthorized access, ransomware attacks on sensitive clinical data</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Data Loss & Recovery</div>
+                            <div class="risk-item-desc">Accidental deletion, corruption of critical trial data, or inadequate backup systems</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-card financial-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">💰</span>
+                        Financial Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">Budget Overruns</div>
+                            <div class="risk-item-desc">Unexpected costs exceeding allocated trial budgets due to scope changes or complications</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Liability Claims</div>
+                            <div class="risk-item-desc">Legal costs and compensation claims from participants for trial-related injuries</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Contract Penalties</div>
+                            <div class="risk-item-desc">Financial penalties for protocol violations, timeline delays, or deliverable failures</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Insurance Coverage Gaps</div>
+                            <div class="risk-item-desc">Inadequate insurance coverage leading to significant financial exposure</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-card ethical-risk">
+                    <div class="risk-header">
+                        <span class="risk-icon">⚖️</span>
+                        Ethical & Legal Risks
+                    </div>
+                    <div class="risk-content">
+                        <div class="risk-item">
+                            <div class="risk-item-title">Informed Consent Issues</div>
+                            <div class="risk-item-desc">Inadequate or compromised informed consent processes affecting participant rights</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Vulnerable Population Protection</div>
+                            <div class="risk-item-desc">Additional safeguards required for minors, pregnant women, or cognitively impaired subjects</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Privacy & Confidentiality</div>
+                            <div class="risk-item-desc">Breach of participant confidentiality and privacy rights under local data protection laws</div>
+                        </div>
+                        <div class="risk-item">
+                            <div class="risk-item-title">Conflicts of Interest</div>
+                            <div class="risk-item-desc">Undisclosed financial or professional conflicts compromising study objectivity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="severity-section">
+                <div class="section-header">
+                    <h2 class="section-title">Risk Severity Assessment</h2>
+                </div>
+                <div class="severity-grid">
+                    <div class="severity-card low">
+                        <div class="severity-level">LOW RISK</div>
+                        <div class="severity-desc">Minimal impact on participant safety and study objectives</div>
+                    </div>
+                    <div class="severity-card moderate">
+                        <div class="severity-level">MODERATE RISK</div>
+                        <div class="severity-desc">Manageable impact with standard mitigation strategies</div>
+                    </div>
+                    <div class="severity-card high">
+                        <div class="severity-level">HIGH RISK</div>
+                        <div class="severity-desc">Significant impact requiring enhanced monitoring and controls</div>
+                    </div>
+                    <div class="severity-card critical">
+                        <div class="severity-level">CRITICAL RISK</div>
+                        <div class="severity-desc">Severe impact potentially compromising trial integrity</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mitigation-section">
+                <div class="section-header">
+                    <h2 class="section-title">Risk Mitigation Strategies</h2>
+                </div>
+                <div class="mitigation-grid">
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">🎯 Proactive Risk Planning</div>
+                        <div class="mitigation-content">
+                            Comprehensive risk assessment during protocol development, thorough site selection criteria, detailed contingency planning, and pre-trial feasibility studies.
+                        </div>
+                    </div>
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">📊 Continuous Monitoring</div>
+                        <div class="mitigation-content">
+                            Real-time safety monitoring systems, regular site visits and audits, ongoing data quality assessments, and automated alert systems for early detection.
+                        </div>
+                    </div>
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">🎓 Training & Education</div>
+                        <div class="mitigation-content">
+                            Comprehensive staff training programs, regular protocol updates and refreshers, GCP certification maintenance, and specialized training for high-risk procedures.
+                        </div>
+                    </div>
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">💻 Technology Solutions</div>
+                        <div class="mitigation-content">
+                            Robust EDC systems with built-in validation, automated safety alert mechanisms, secure data backup and recovery procedures, and cybersecurity protocols.
+                        </div>
+                    </div>
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">📝 Quality Assurance</div>
+                        <div class="mitigation-content">
+                            Regular quality control checks, independent data monitoring committees, systematic audit trails, and standardized operating procedures.
+                        </div>
+                    </div>
+                    <div class="mitigation-card">
+                        <div class="mitigation-title">🤝 Stakeholder Communication</div>
+                        <div class="mitigation-content">
+                            Clear communication channels, regular stakeholder updates, transparent reporting mechanisms, and collaborative problem-solving approaches.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-banner">
+                <h3 style="font-size: 24px; margin-bottom: 10px;">Clinical Trial Risk Statistics</h3>
+                <p style="opacity: 0.8; margin-bottom: 20px;">Key metrics highlighting the importance of comprehensive risk management</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">80%</div>
+                        <div class="stat-label">Trials experience at least one significant risk event</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">65%</div>
+                        <div class="stat-label">Risk events are preventable with proper planning</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">45%</div>
+                        <div class="stat-label">Cost reduction with effective risk management</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">90%</div>
+                        <div class="stat-label">Regulatory compliance rate with systematic approach</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
